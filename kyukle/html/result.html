@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <!--  This file has been downloaded from https://bootdey.com  -->
+    <!--  All snippets are MIT license https://bootdey.com/license -->
+    <title>Kyukle</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/index.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container bootstrap snippet">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                  <h1>
+                    <a href="/">  <span class="text-green">Kyukle</span></a>
+                  </h1>
+                    <h2>
+                        <%= pagingResult.totalCount %> results found for: <span class="text-navy">"<%= query %>"</span>
+                    </h2>
+                    <small>Request time  (<%= duration %> seconds)</small>
+
+                    <div class="search-form">
+                        <form name="searchForm" action="/result" method="get">
+                            <input type="hidden" name="p" value="<%=pagingResult.currentPage%>">
+                            <div class="input-group">
+                                <input type="text" placeholder="keywords..." name="q" class="form-control input-lg" value="<%= query %>">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-lg btn-primary" type="submit">
+                                        Search
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="hr-line-dashed"></div>
+
+                    <% listResult.forEach(function (item, index){ %>
+                    <div class="search-result">
+                        <h3><a href="#"><%= item.title %></a></h3>
+                        <a href="<%= item.siteUrl %>" class="search-link"><%= item.siteUrl %></a>
+                        <p><%= item.body %><p>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <% }); %>
+
+                    <% if( listResult.length > 0 ){ %>
+                    <div class="text-center">
+                        <div class="btn-group _pageButtonGroup">
+                          <% if( pagingResult.startPage > pagingResult.pageSize ){ %>
+                            <button type="button" data-page="<%= pagingResult.startPage - Number(pagingResult.pageSize) %>" class="btn btn-white" type="button"><i class="glyphicon glyphicon-chevron-left"></i></button>
+                          <% } %>
+                          <% for(var i = pagingResult.startPage; i <= pagingResult.endPage; i++){ %>
+
+                            <button type="button" data-page="<%= i %>" class="btn btn-white <%= i == pagingResult.currentPage?'active':'' %>"><%= i %></button>
+                          <% } %>
+                          <% if( pagingResult.endPage != pagingResult.totalPageCount ){ %>
+                            <button type="button" data-page="<%= pagingResult.endPage + Number(pagingResult.pageSize) %>" class="btn btn-white" type="button"><i class="glyphicon glyphicon-chevron-right"></i></button>
+                          <% } %>
+                        </div>
+                    </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+
+$(function(){
+  $("._pageButtonGroup").find("button").on("click", function(){
+      var page = $(this).data("page");
+
+      $("input[name=p]").val(page)
+      $("form[name=searchForm]").submit();
+  });
+});
+
+</script>
+</body>
+</html>
